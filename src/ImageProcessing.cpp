@@ -1,6 +1,7 @@
 
 #include "ImageProcessing.h"
 #include "ImageInterpolation.h"
+#include <math.h>
 
 #include <QDebug>
 
@@ -10,7 +11,13 @@ void imageProcessingFun(const QString& progName, QImage* const outImgs, const QI
 	int Y_SIZE = inImgs->height();
 
 	/* NOTE: Calculate output image resolution and construct output image object */
-
+	int X_SIZE_NEW, Y_SIZE_NEW;
+	
+	auto upto = [](int x, int y)
+	{
+		return (x + y - 1) & ~(y - 1);
+	};
+	
 	if(progName == "Sample and hold") 
 	{	
 		/* Input image data in RGB format can be obtained with inImgs->bits() */
@@ -19,7 +26,15 @@ void imageProcessingFun(const QString& progName, QImage* const outImgs, const QI
 
 		/* TO DO: Calculate output image resolution and construct output image object */
 
+		X_SIZE_NEW = upto(X_SIZE * params[1], 4);
+		Y_SIZE_NEW = upto(X_SIZE * params[0], 4);
+
+		new (outImgs) QImage(X_SIZE_NEW, Y_SIZE_NEW, inImgs->format());
+
 		/* TO DO: Perform Sample and hold interpolation  */
+		
+
+		sampleAndHold(inImgs->bits(), X_SIZE, Y_SIZE, outImgs->bits(), X_SIZE_NEW, Y_SIZE_NEW);
 
 
 	}

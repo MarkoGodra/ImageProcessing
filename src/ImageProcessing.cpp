@@ -46,7 +46,14 @@ void imageProcessingFun(const QString& progName, QImage* const outImgs, const QI
 
 		/* TO DO: Calculate output image resolution and construct output image object */
 
+		X_SIZE_NEW = upto(X_SIZE * params[1], 4);
+		Y_SIZE_NEW = upto(X_SIZE * params[0], 4);
+
+		new (outImgs) QImage(X_SIZE_NEW, Y_SIZE_NEW, inImgs->format());
+
 		/* TO DO: Perform Bilinear interpolation  */
+
+		bilinearInterpolate(inImgs->bits(), X_SIZE, Y_SIZE, outImgs->bits(), X_SIZE_NEW, Y_SIZE_NEW);
 	}
 	else if (progName == "Bicubic")
 	{

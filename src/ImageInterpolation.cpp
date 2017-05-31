@@ -98,16 +98,16 @@ void bilinearInterpolate(const uchar input[], int xSize, int ySize, uchar output
 
 		for (int j = 0; j < newXSize; j++) {
 			
-			int a = i / scale_vertical - floor(i / scale_vertical);
-			int b = j / scale_horizontal - floor(j / scale_horizontal);
+			double a = i / scale_vertical - floor(i / scale_vertical);
+			double b = j / scale_horizontal - floor(j / scale_horizontal);
 
 			int ii = i / scale_vertical;
 			int jj = j / scale_horizontal;
 
 			y_new[i * newXSize + j] =
 				(1 - a) * (1 - b) * y_old[ii * xSize + jj] +
-				(1 - a) * b * y_old[(ii + 1) * xSize + jj] +
-				a * (1 - b) * y_old[ii * xSize + (jj + 1)] +
+				(1 - a) * b * y_old[ii * xSize + (jj + 1)] +
+				a * (1 - b) * y_old[(ii + 1) * xSize + jj] +
 				a * b * y_old[(ii + 1) * xSize + (jj + 1)];
 
 		}
@@ -117,22 +117,22 @@ void bilinearInterpolate(const uchar input[], int xSize, int ySize, uchar output
 
 		for (int j = 0; j < newXSize / 2; j++) {
 
-			int a = i / scale_vertical - floor(i / scale_vertical);
-			int b = j / scale_horizontal - floor(j / scale_horizontal);
+			double a = i / scale_vertical - floor(i / scale_vertical);
+			double b = j / scale_horizontal - floor(j / scale_horizontal);
 
 			int ii = i / scale_vertical;
 			int jj = j / scale_horizontal;
 
 			u_new[i * newXSize / 2 + j] =
 				(1 - a) * (1 - b) * u_old[ii * xSize / 2 + jj] +
-				(1 - a) * b * u_old[(ii + 1) * xSize / 2 + jj] +
-				a * (1 - b) * u_old[ii * xSize / 2 + (jj + 1)] +
+				(1 - a) * b * u_old[ii * xSize / 2 + (jj + 1)] +
+				a * (1 - b) * u_old[(ii + 1) * xSize / 2 + jj] +
 				a * b * u_old[(ii + 1) * xSize / 2 + (jj + 1)];
 
 			v_new[i * newXSize / 2 + j] =
 				(1 - a) * (1 - b) * v_old[ii * xSize / 2 + jj] +
-				(1 - a) * b * v_old[(ii + 1) * xSize / 2 + jj] +
-				a * (1 - b) * v_old[ii * xSize / 2 + (jj + 1)] +
+				(1 - a) * b * v_old[ii * xSize / 2 + (jj + 1)] +
+				a * (1 - b) * v_old[(ii + 1) * xSize / 2 + jj] +
 				a * b * v_old[(ii + 1) * xSize / 2 + (jj + 1)];
 		}
 	}

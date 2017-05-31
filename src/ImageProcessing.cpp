@@ -5,6 +5,10 @@
 
 #include <QDebug>
 
+int upto(int x, int y) {
+	return (x + y - 1) & ~(y - 1);
+}
+
 void imageProcessingFun(const QString& progName, QImage* const outImgs, const QImage* const inImgs, const QVector<double>& params) 
 {
 	int X_SIZE = inImgs->width();
@@ -12,11 +16,6 @@ void imageProcessingFun(const QString& progName, QImage* const outImgs, const QI
 
 	/* NOTE: Calculate output image resolution and construct output image object */
 	int X_SIZE_NEW, Y_SIZE_NEW;
-	
-	auto upto = [](int x, int y)
-	{
-		return (x + y - 1) & ~(y - 1);
-	};
 	
 	if(progName == "Sample and hold") 
 	{	
@@ -33,10 +32,7 @@ void imageProcessingFun(const QString& progName, QImage* const outImgs, const QI
 
 		/* TO DO: Perform Sample and hold interpolation  */
 		
-
 		sampleAndHold(inImgs->bits(), X_SIZE, Y_SIZE, outImgs->bits(), X_SIZE_NEW, Y_SIZE_NEW);
-
-
 	}
 	else if (progName == "Bilinear") 
 	{
@@ -62,9 +58,15 @@ void imageProcessingFun(const QString& progName, QImage* const outImgs, const QI
 		/* Horizontal scale factor is params[1] */
 
 		/* TO DO: Calculate output image resolution and construct output image object */
+		
+		X_SIZE_NEW = upto(X_SIZE * params[1], 4);
+		Y_SIZE_NEW = upto(X_SIZE * params[0], 4);
 
-		/* TO DO: Perform Bicubic interpolation  */
+		new (outImgs) QImage(X_SIZE_NEW, Y_SIZE_NEW, inImgs->format());
 
+		/* TO DO: Perform Bilinear interpolation  */
+
+ 		bicubicInterpolate((uchar*)inImgs->bits(), X_SIZE, Y_SIZE, outImgs->bits(), X_SIZE_NEW, Y_SIZE_NEW);
 	}
 	else if(progName == "Rotation") 
 	{	

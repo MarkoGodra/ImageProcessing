@@ -156,6 +156,24 @@ void bilinearInterpolate(const uchar input[], int xSize, int ySize, uchar output
 void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int newXSize, int newYSize)
 {
 	/* TO DO */
+	uchar *y_old = new uchar[xSize * ySize]();
+	uchar *y_new = new uchar[newXSize * newYSize]();
+
+	char *v_old = new char[xSize * ySize / 4]();
+	char *u_old = new char[xSize * ySize / 4]();
+	char *v_new = new char[newXSize * newYSize / 4]();
+	char *u_new = new char[newXSize * newYSize / 4]();
+
+	/*
+	Convert to YUV from RGB
+	*/
+	RGBtoYUV420(input, xSize, ySize, y_old, u_old, v_old);
+
+	/*
+	Calculate scale factors so i can apply formula
+	*/
+	const double scale_horizontal = (double)newXSize / xSize;
+	const double scale_vertical = (double)newYSize / ySize;
 }
 
 void imageRotate(const uchar input[], int xSize, int ySize, uchar output[], int m, int n, double angle)

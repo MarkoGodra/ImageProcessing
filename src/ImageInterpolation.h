@@ -5,6 +5,7 @@
 #include <QString>
 #include <QVector>
 #include <QImage>
+#include "ImageFilter.h"
 
 void sampleAndHold(const uchar input[], int xSize, int ySize, uchar output[], int newXSize, int newYSize);
 

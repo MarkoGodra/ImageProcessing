@@ -1,3 +1,9 @@
-﻿  ImageProcessing.cpp
-  ImageDSP.vcxproj -> C:\Users\student.DOMAIN\Desktop\ImageProcessing\build\vs2015\ImageDSP\x64\Debug\ImageDSP.exe
-  ImageDSP.vcxproj -> C:\Users\student.DOMAIN\Desktop\ImageProcessing\build\vs2015\ImageDSP\x64\Debug\ImageDSP.pdb (Full PDB)
+﻿Build started 6/4/2017 11:37:49 AM.
+     1>Project "C:\Users\godra\Desktop\ImageProcessing\build\vs2015\ImageDSP\ImageDSP\ImageDSP.vcxproj" on node 2 (Clean target(s)).
+     1>_PrepareForClean:
+         Deleting file "x64\Debug\ImageDSP.tlog\ImageDSP.lastbuildstate".
+     1>Done Building Project "C:\Users\godra\Desktop\ImageProcessing\build\vs2015\ImageDSP\ImageDSP\ImageDSP.vcxproj" (Clean target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.04

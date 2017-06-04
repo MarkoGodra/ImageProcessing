@@ -83,6 +83,8 @@ void bilinearInterpolate(const uchar input[], int xSize, int ySize, uchar output
 	char *v_new = new char[newXSize * newYSize / 4]();
 	char *u_new = new char[newXSize * newYSize / 4]();
 
+	//extendBorders(temp1, xSize, ySize, temp2, 4);
+
 	/*
 		Convert to YUV from RGB
 	*/
@@ -104,11 +106,22 @@ void bilinearInterpolate(const uchar input[], int xSize, int ySize, uchar output
 			int ii = i / scale_vertical;
 			int jj = j / scale_horizontal;
 
+			int iii = ii;
+			int jjj = jj;
+
+			/*
+				Bottom tearing protection
+			*/
+			if (ii < ySize - 1)
+				iii = ii + 1;
+			if (jj < xSize - 1)
+				jjj = jj + 1;
+
 			y_new[i * newXSize + j] =
 				(1 - a) * (1 - b) * y_old[ii * xSize + jj] +
-				(1 - a) * b * y_old[ii * xSize + (jj + 1)] +
-				a * (1 - b) * y_old[(ii + 1) * xSize + jj] +
-				a * b * y_old[(ii + 1) * xSize + (jj + 1)];
+				(1 - a) * b * y_old[ii * xSize + jjj] +
+				a * (1 - b) * y_old[iii * xSize + jj] +
+				a * b * y_old[iii * xSize + jjj];
 
 		}
 	}
@@ -123,17 +136,28 @@ void bilinearInterpolate(const uchar input[], int xSize, int ySize, uchar output
 			int ii = i / scale_vertical;
 			int jj = j / scale_horizontal;
 
+			int iii = ii;
+			int jjj = jj;
+
+			/*
+			Bottom tearing protection
+			*/
+			if (ii < ySize / 2 - 1)
+				iii = ii + 1;
+			if (jj < xSize / 2 - 1)
+				jjj = jj + 1;
+
 			u_new[i * newXSize / 2 + j] =
 				(1 - a) * (1 - b) * u_old[ii * xSize / 2 + jj] +
-				(1 - a) * b * u_old[ii * xSize / 2 + (jj + 1)] +
-				a * (1 - b) * u_old[(ii + 1) * xSize / 2 + jj] +
-				a * b * u_old[(ii + 1) * xSize / 2 + (jj + 1)];
+				(1 - a) * b * u_old[ii * xSize / 2 + jjj] +
+				a * (1 - b) * u_old[iii * xSize / 2 + jj] +
+				a * b * u_old[iii * xSize / 2 + jjj];
 
 			v_new[i * newXSize / 2 + j] =
 				(1 - a) * (1 - b) * v_old[ii * xSize / 2 + jj] +
-				(1 - a) * b * v_old[ii * xSize / 2 + (jj + 1)] +
-				a * (1 - b) * v_old[(ii + 1) * xSize / 2 + jj] +
-				a * b * v_old[(ii + 1) * xSize / 2 + (jj + 1)];
+				(1 - a) * b * v_old[ii * xSize / 2 + jjj] +
+				a * (1 - b) * v_old[iii * xSize / 2 + jj] +
+				a * b * v_old[iii * xSize / 2 + jjj];
 		}
 	}
 

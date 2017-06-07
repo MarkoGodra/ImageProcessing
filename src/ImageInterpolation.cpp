@@ -340,14 +340,21 @@ uchar cubicInterpolation(uchar points[4], double d) {
 	w[2] = weight(1 - d);
 	w[3] = weight(2 - d);
 
-	uchar point = 0;
+	int point = 0;
 	for (int i = 0; i < 4; i++) {
 		point += w[i] * points[i];
 	}
 
+	if (point > 255) {
+		point = 255;
+	}
+	else if (point < 0) {
+		point = 0;
+	}
+
 	delete[] w;
 
-	return point;
+	return (uchar)point;
 
 }
 
@@ -362,14 +369,21 @@ char cubicInterpolation_char(char points[4], double d) {
 	w[2] = weight(1 - d);
 	w[3] = weight(2 - d);
 
-	char point = 0;
+	int point = 0;
 	for (int i = 0; i < 4; i++) {
 		point += w[i] * points[i];
 	}
 
+	if (point > 127) {
+		point = 127;
+	}
+	else if (point < -128) {
+		point = -128;
+	}
+
 	delete[] w;
 
-	return point;
+	return (char)point;
 
 }
 

@@ -208,6 +208,10 @@ void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int
 	*/
 	RGBtoYUV420(input, xSize, ySize, y_old, u_old, v_old);
 
+	//uchar *y_extended = new uchar[(xSize + 2) * (ySize + 2)]();
+
+	//extendBorders(y_old, xSize, ySize, y_extended, 2);
+
 	/*
 	Calculate scale factors so i can apply formula
 	*/
@@ -230,16 +234,65 @@ void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int
 			uchar temp_array_2[4];
 
 			int l;
+
+
 			for (int k = ii - 1, l = 0; k < ii + 3; k++, l++) {
 				temp_array[0] = y_old[k * xSize + jj - 1];
 				temp_array[1] = y_old[k * xSize + jj];
 				temp_array[2] = y_old[k * xSize + jj + 1];
 				temp_array[3] = y_old[k * xSize + jj + 2];
 
+
 				temp_array_2[l] = cubicInterpolation(temp_array, d_horizontal);
+				
 			}
 
 			y_new[i * newXSize + j] = cubicInterpolation(temp_array_2, d_vertical);
+
+		}
+	}
+
+	for (int i = 0; i < newYSize / 2; i++) {
+		for (int j = 0; j < newXSize / 2; j++) {
+
+			double d_vertical = i / scale_vertical - floor(i / scale_vertical);
+			double d_horizontal = j / scale_horizontal - floor(j / scale_horizontal);
+
+			int ii = i / scale_vertical;
+			int jj = j / scale_horizontal;
+
+			char temp_array_u[4];
+			char temp_array_u_2[4];
+
+			char temp_array_v[4];
+			char temp_array_v_2[4];
+
+			int l;
+
+			for (int k = ii - 1, l = 0; k < ii + 3; k++, l++) {
+				temp_array_u[0] = u_old[k * xSize / 2 + jj - 1];
+				temp_array_u[1] = u_old[k * xSize / 2 + jj];
+				temp_array_u[2] = u_old[k * xSize / 2 + jj + 1];
+				temp_array_u[3] = u_old[k * xSize / 2 + jj + 2];
+
+				temp_array_u_2[l] = cubicInterpolation_char(temp_array_u, d_horizontal);
+			}
+
+			u_new[i * newXSize / 2 + j] = cubicInterpolation_char(temp_array_u_2, d_vertical);
+
+
+			for (int k = ii - 1, l = 0; k < ii + 3; k++, l++) {
+				temp_array_v[0] = v_old[k * xSize / 2 + jj - 1];
+				temp_array_v[1] = v_old[k * xSize / 2 + jj];
+				temp_array_v[2] = v_old[k * xSize / 2 + jj + 1];
+				temp_array_v[3] = v_old[k * xSize / 2 + jj + 2];
+
+				temp_array_v_2[l] = cubicInterpolation_char(temp_array_v, d_horizontal);
+			}
+
+			v_new[i * newXSize / 2 + j] = cubicInterpolation_char(temp_array_v_2, d_vertical);
+
+
 		}
 	}
 
@@ -277,6 +330,25 @@ uchar cubicInterpolation(uchar points[4], double d) {
 	w[3] = weight(2 - d);
 
 	uchar point = 0;
+	for (int i = 0; i < 4; i++) {
+		point += w[i] * points[i];
+	}
+
+	delete[] w;
+
+	return point;
+
+}
+
+char cubicInterpolation_char(char points[4], double d) {
+
+	double *w = new double[4];
+	w[0] = weight(d + 1);
+	w[1] = weight(d);
+	w[2] = weight(1 - d);
+	w[3] = weight(2 - d);
+
+	char point = 0;
 	for (int i = 0; i < 4; i++) {
 		point += w[i] * points[i];
 	}

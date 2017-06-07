@@ -19,6 +19,8 @@ void imageRotateBilinear(const uchar input[], int xSize, int ySize, uchar output
 
 uchar cubicInterpolation(uchar points[4], double d);
 
+char cubicInterpolation_char(char points[4], double d);
+
 double weight(double d);
 
 #endif // IMAGEINTERPOLATION_H_

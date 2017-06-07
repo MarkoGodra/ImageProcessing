@@ -15,6 +15,7 @@ c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\inimgitem.obj
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\imageviewer.obj
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\imageprocessing.obj
+c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\imageinterpolation.obj
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\imagefilter.obj
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\hoveredittriggerlistview.obj
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\colorspaces.obj
@@ -24,7 +25,6 @@ c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\moc_paramitem.obj
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\moc_mainwindow.obj
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\moc_itemwidget.obj
-c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\imageinterpolation.obj
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\x64\debug\qrc_imagedsp.obj
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\generatedfiles\debug\moc_universalitemdelegate.cpp
 c:\users\student.domain\desktop\imageprocessing\build\vs2015\imagedsp\imagedsp\generatedfiles\debug\moc_tablemodel.cpp

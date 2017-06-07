@@ -369,7 +369,65 @@ char cubicInterpolation_char(char points[4], double d) {
 
 void imageRotate(const uchar input[], int xSize, int ySize, uchar output[], int m, int n, double angle)
 {
-	/* TO DO */
+	/*
+		Allocate memory for each component
+	*/
+	uchar *y_old = new uchar[xSize * ySize];
+	uchar *y_new = new uchar[xSize * ySize];
+
+	char *v_old = new char[xSize * ySize / 4];
+	char *u_old = new char[xSize * ySize / 4];
+	char *v_new = new char[xSize * ySize / 4]();
+	char *u_new = new char[xSize * ySize / 4]();
+
+	RGBtoYUV420(input, xSize, ySize, y_old, u_old, v_old);
+
+	/*
+		Calculate the angle for wich to rotate
+	*/
+	double theta = 3.14 * angle / 180;
+
+	for (int i = 0; i < ySize; i++) {
+		for (int j = 0; j < xSize; j++) {
+			int ii = (int)(i * cos(theta) + j * sin(theta) - m * sin(theta) - n * cos(theta) + n);
+			int jj = (int)(j * cos(theta) - i * sin(theta) - m * cos(theta) + n * sin(theta) + m);
+			
+			if (jj >= xSize || jj < 0 || ii >= ySize || ii < 0) {
+				y_new[i * xSize + j] = 0;
+			}
+			else {
+				y_new[i * xSize + j] = y_old[ii * xSize + jj];
+			}
+		}
+	}
+
+	for (int i = 0; i < ySize / 2; i++) {
+		for (int j = 0; j < xSize / 2; j++) {
+			int ii = (int)(i * cos(theta) + j * sin(theta) - m / 2 * sin(theta) - n / 2 * cos(theta) + n / 2);
+			int jj = (int)(j * cos(theta) - i * sin(theta) - m / 2 * cos(theta) + n / 2 * sin(theta) + m / 2);
+
+			if (jj >= xSize / 2 || jj < 0 || ii >= ySize / 2 || ii < 0) {
+				u_new[i * xSize / 2 + j] = 0;
+				v_new[i * xSize / 2 + j] = 0;
+			}
+			else {
+				u_new[i * xSize / 2 + j] = u_old[ii * xSize / 2 + jj];
+				v_new[i * xSize / 2 + j] = v_old[ii * xSize / 2 + jj];
+			}
+		}
+	}
+
+	YUV420toRGB(y_new, u_new, v_new, xSize, ySize, output);
+
+	/*
+		Deleting allocated resources
+	*/
+	delete[] y_old;
+	delete[] y_new;
+	delete[] u_old;
+	delete[] u_new;
+	delete[] v_old;
+	delete[] v_new;
 }
 
 void imageRotateBilinear(const uchar input[], int xSize, int ySize, uchar output[], int m, int n, double angle)

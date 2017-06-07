@@ -208,9 +208,9 @@ void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int
 	*/
 	RGBtoYUV420(input, xSize, ySize, y_old, u_old, v_old);
 
-	//uchar *y_extended = new uchar[(xSize + 2) * (ySize + 2)]();
+	uchar *y_extended = new uchar[(xSize + 4) * (ySize + 4)]();
 
-	//extendBorders(y_old, xSize, ySize, y_extended, 2);
+	extendBorders(y_old, xSize, ySize, y_extended, 2);
 
 	/*
 	Calculate scale factors so i can apply formula
@@ -237,11 +237,11 @@ void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int
 
 
 			for (int k = ii - 1, l = 0; k < ii + 3; k++, l++) {
-				temp_array[0] = y_old[k * xSize + jj - 1];
-				temp_array[1] = y_old[k * xSize + jj];
-				temp_array[2] = y_old[k * xSize + jj + 1];
-				temp_array[3] = y_old[k * xSize + jj + 2];
-
+				
+				temp_array[0] = y_extended[k * (xSize + 4) + jj - 1];
+				temp_array[1] = y_extended[k * (xSize + 4) + jj];
+				temp_array[2] = y_extended[k * (xSize + 4) + jj + 1];
+				temp_array[3] = y_extended[k * (xSize + 4) + jj + 2];
 
 				temp_array_2[l] = cubicInterpolation(temp_array, d_horizontal);
 				
@@ -251,6 +251,12 @@ void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int
 
 		}
 	}
+
+	char *u_extended = new char[(xSize + 16) * (ySize + 16) / 4]();
+	char *v_extended = new char[(xSize + 16) * (ySize + 16) / 4]();
+
+	extendBorders_char(u_old, xSize/2, ySize/2, u_extended, 2);
+	extendBorders_char(v_old, xSize/2, ySize/2, v_extended, 2);
 
 	for (int i = 0; i < newYSize / 2; i++) {
 		for (int j = 0; j < newXSize / 2; j++) {
@@ -270,10 +276,10 @@ void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int
 			int l;
 
 			for (int k = ii - 1, l = 0; k < ii + 3; k++, l++) {
-				temp_array_u[0] = u_old[k * xSize / 2 + jj - 1];
-				temp_array_u[1] = u_old[k * xSize / 2 + jj];
-				temp_array_u[2] = u_old[k * xSize / 2 + jj + 1];
-				temp_array_u[3] = u_old[k * xSize / 2 + jj + 2];
+				temp_array_u[0] = u_extended[k * (xSize / 2 + 4) + jj - 1];
+				temp_array_u[1] = u_extended[k * (xSize / 2 + 4) + jj];
+				temp_array_u[2] = u_extended[k * (xSize / 2 + 4) + jj + 1];
+				temp_array_u[3] = u_extended[k * (xSize / 2 + 4) + jj + 2];
 
 				temp_array_u_2[l] = cubicInterpolation_char(temp_array_u, d_horizontal);
 			}
@@ -282,16 +288,15 @@ void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int
 
 
 			for (int k = ii - 1, l = 0; k < ii + 3; k++, l++) {
-				temp_array_v[0] = v_old[k * xSize / 2 + jj - 1];
-				temp_array_v[1] = v_old[k * xSize / 2 + jj];
-				temp_array_v[2] = v_old[k * xSize / 2 + jj + 1];
-				temp_array_v[3] = v_old[k * xSize / 2 + jj + 2];
+				temp_array_v[0] = v_extended[k * (xSize / 2 + 4) + jj - 1];
+				temp_array_v[1] = v_extended[k * (xSize / 2 + 4) + jj];
+				temp_array_v[2] = v_extended[k * (xSize / 2 + 4) + jj + 1];
+				temp_array_v[3] = v_extended[k * (xSize / 2 + 4) + jj + 2];
 
 				temp_array_v_2[l] = cubicInterpolation_char(temp_array_v, d_horizontal);
 			}
 
 			v_new[i * newXSize / 2 + j] = cubicInterpolation_char(temp_array_v_2, d_vertical);
-
 
 		}
 	}
@@ -310,6 +315,9 @@ void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int
 	delete[] u_new;
 	delete[] v_old;
 	delete[] v_new;
+	delete[] y_extended;
+	delete[] u_extended;
+	delete[] v_extended;
 }
 
 double weight(double d) {

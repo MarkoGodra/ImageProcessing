@@ -5,13 +5,13 @@
 
 void sampleAndHold(const uchar input[], int xSize, int ySize, uchar output[], int newXSize, int newYSize)
 {
-	uchar *y_old = new uchar[xSize * ySize]();
-	uchar *y_new = new uchar[newXSize * newYSize]();
+	uchar *y_old = new uchar[xSize * ySize];
+	uchar *y_new = new uchar[newXSize * newYSize];
 
-	char *v_old = new char[xSize * ySize / 4]();
-	char *u_old = new char[xSize * ySize / 4]();
-	char *v_new = new char[newXSize * newYSize / 4]();
-	char *u_new = new char[newXSize * newYSize / 4]();
+	char *v_old = new char[xSize * ySize / 4];
+	char *u_old = new char[xSize * ySize / 4];
+	char *v_new = new char[newXSize * newYSize / 4];
+	char *u_new = new char[newXSize * newYSize / 4];
 
 	/*
 		Convert to YUV from RGB
@@ -93,13 +93,13 @@ void sampleAndHold(const uchar input[], int xSize, int ySize, uchar output[], in
 
 void bilinearInterpolate(const uchar input[], int xSize, int ySize, uchar output[], int newXSize, int newYSize)
 {
-	uchar *y_old = new uchar[xSize * ySize]();
-	uchar *y_new = new uchar[newXSize * newYSize]();
+	uchar *y_old = new uchar[xSize * ySize];
+	uchar *y_new = new uchar[newXSize * newYSize];
 
-	char *v_old = new char[xSize * ySize / 4]();
-	char *u_old = new char[xSize * ySize / 4]();
-	char *v_new = new char[newXSize * newYSize / 4]();
-	char *u_new = new char[newXSize * newYSize / 4]();	
+	char *v_old = new char[xSize * ySize / 4];
+	char *u_old = new char[xSize * ySize / 4];
+	char *v_new = new char[newXSize * newYSize / 4];
+	char *u_new = new char[newXSize * newYSize / 4];	
 
 	/*
 		Convert to YUV from RGB
@@ -156,7 +156,7 @@ void bilinearInterpolate(const uchar input[], int xSize, int ySize, uchar output
 			int jjj = jj;
 
 			/*
-			Bottom tearing protection
+				Bottom tearing protection
 			*/
 			if (ii < ySize / 2 - 1)
 				iii = ii + 1;
@@ -195,16 +195,16 @@ void bilinearInterpolate(const uchar input[], int xSize, int ySize, uchar output
 
 void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int newXSize, int newYSize)
 {
-	uchar *y_old = new uchar[xSize * ySize]();
-	uchar *y_new = new uchar[newXSize * newYSize]();
+	uchar *y_old = new uchar[xSize * ySize];
+	uchar *y_new = new uchar[newXSize * newYSize];
 
-	char *v_old = new char[xSize * ySize / 4]();
-	char *u_old = new char[xSize * ySize / 4]();
-	char *v_new = new char[newXSize * newYSize / 4]();
-	char *u_new = new char[newXSize * newYSize / 4]();
+	char *v_old = new char[xSize * ySize / 4];
+	char *u_old = new char[xSize * ySize / 4];
+	char *v_new = new char[newXSize * newYSize / 4];
+	char *u_new = new char[newXSize * newYSize / 4];
 
 	/*
-	Convert to YUV from RGB
+		Convert to YUV from RGB
 	*/
 	RGBtoYUV420(input, xSize, ySize, y_old, u_old, v_old);
 
@@ -213,13 +213,13 @@ void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int
 	extendBorders(y_old, xSize, ySize, y_extended, 2);
 
 	/*
-	Calculate scale factors so i can apply formula
+		Calculate scale factors so i can apply formula
 	*/
 	const double scale_horizontal = (double)newXSize / xSize;
 	const double scale_vertical = (double)newYSize / ySize;
 
 	/*
-	Processing
+		Processing
 	*/
 	for (int i = 0; i < newYSize; i++) {
 		for (int j = 0; j < newXSize; j++) {
@@ -302,12 +302,12 @@ void bicubicInterpolate(uchar input[], int xSize, int ySize, uchar output[], int
 	}
 
 	/*
-	Go back to RGB color space
+		Go back to RGB color space
 	*/
 	YUV420toRGB(y_new, u_new, v_new, newXSize, newYSize, output);
 
 	/*
-	Free allocated resources
+		Free allocated resources
 	*/
 	delete[] y_old;
 	delete[] y_new;
@@ -329,8 +329,11 @@ double weight(double d) {
 		return 0;
 }
 
+/*
+	Function for calculating cubic interpolation for Y componente (unsigned char)
+*/
 uchar cubicInterpolation(uchar points[4], double d) {
-
+	
 	double *w = new double[4];
 	w[0] = weight(d + 1);
 	w[1] = weight(d);
@@ -348,6 +351,9 @@ uchar cubicInterpolation(uchar points[4], double d) {
 
 }
 
+/*
+	Function for calculating cubic interpolation for U and V components (char)
+*/
 char cubicInterpolation_char(char points[4], double d) {
 
 	double *w = new double[4];
@@ -377,8 +383,8 @@ void imageRotate(const uchar input[], int xSize, int ySize, uchar output[], int 
 
 	char *v_old = new char[xSize * ySize / 4];
 	char *u_old = new char[xSize * ySize / 4];
-	char *v_new = new char[xSize * ySize / 4]();
-	char *u_new = new char[xSize * ySize / 4]();
+	char *v_new = new char[xSize * ySize / 4];
+	char *u_new = new char[xSize * ySize / 4];
 
 	RGBtoYUV420(input, xSize, ySize, y_old, u_old, v_old);
 
@@ -432,5 +438,108 @@ void imageRotate(const uchar input[], int xSize, int ySize, uchar output[], int 
 
 void imageRotateBilinear(const uchar input[], int xSize, int ySize, uchar output[], int m, int n, double angle)
 {
-	/* TO DO */
+	/*
+		Allocate memory for each component
+	*/
+	uchar *y_old = new uchar[xSize * ySize];
+	uchar *y_new = new uchar[xSize * ySize];
+
+	char *v_old = new char[xSize * ySize / 4];
+	char *u_old = new char[xSize * ySize / 4];
+	char *v_new = new char[xSize * ySize / 4];
+	char *u_new = new char[xSize * ySize / 4];
+
+	RGBtoYUV420(input, xSize, ySize, y_old, u_old, v_old);
+
+	/*
+		Extending borders for tearing protection
+	*/
+	uchar *y_extended = new uchar[(xSize + 2) * (ySize + 2)];
+
+	extendBorders(y_old, xSize, ySize, y_extended, 1);
+
+	/*
+		Calculate the angle for wich to rotate
+	*/
+	double theta = 3.14 * angle / 180;
+
+	for (int i = 0; i < ySize; i++) {
+		for (int j = 0; j < xSize; j++) {
+			int ii = (int)(i * cos(theta) + j * sin(theta) - m * sin(theta) - n * cos(theta) + n);
+			int jj = (int)(j * cos(theta) - i * sin(theta) - m * cos(theta) + n * sin(theta) + m);
+
+			double a = i * cos(theta) + j * sin(theta) - m * sin(theta) - n * cos(theta) + n - ii;
+			double b = j * cos(theta) - i * sin(theta) - m * cos(theta) + n * sin(theta) + m - jj;
+
+			int iii = ii + 1;
+			int jjj = jj + 1;
+
+			if (jj >= xSize || jj < 0 || ii >= ySize || ii < 0) {
+				y_new[i * xSize + j] = 0;
+			}
+			else {
+				y_new[i * xSize + j] =
+					(1 - a) * (1 - b) * y_extended[ii * (xSize + 2) + jj] +
+					(1 - a) * b * y_extended[ii * (xSize + 2) + jjj] +
+					a * (1 - b) * y_extended[iii * (xSize + 2) + jj] +
+					a * b * y_extended[iii * (xSize + 2) + jjj];
+			}
+		}
+	}
+
+
+	/*
+		Extending borders for tearing protection
+	*/
+	char *u_extended = new char[(xSize + 8) * (ySize + 8) / 4]();
+	char *v_extended = new char[(xSize + 8) * (ySize + 8) / 4]();
+
+	extendBorders_char(u_old, xSize / 2, ySize / 2, u_extended, 1);
+	extendBorders_char(v_old, xSize / 2, ySize / 2, v_extended, 1);
+
+	for (int i = 0; i < ySize / 2; i++) {
+		for (int j = 0; j < xSize / 2; j++) {
+			int ii = (int)(i * cos(theta) + j * sin(theta) - m / 2 * sin(theta) - n / 2 * cos(theta) + n / 2);
+			int jj = (int)(j * cos(theta) - i * sin(theta) - m / 2 * cos(theta) + n / 2 * sin(theta) + m / 2);
+
+			double a = i * cos(theta) + j * sin(theta) - m / 2 * sin(theta) - n / 2 * cos(theta) + n / 2 - ii;
+			double b = j * cos(theta) - i * sin(theta) - m / 2 * cos(theta) + n / 2 * sin(theta) + m / 2 - jj;
+
+			int iii = ii + 1;
+			int jjj = jj + 1;
+
+			if (jj >= xSize / 2 || jj < 0 || ii >= ySize / 2 || ii < 0) {
+				u_new[i * xSize / 2 + j] = 0;
+				v_new[i * xSize / 2 + j] = 0;
+			}
+			else {
+				u_new[i * xSize / 2 + j] =
+					(1 - a) * (1 - b) * u_extended[ii * (xSize / 2 + 2) + jj] +
+					(1 - a) * b * u_extended[ii * (xSize / 2 + 2) + jjj] +
+					a * (1 - b) * u_extended[iii * (xSize / 2 + 2) + jj] +
+					a * b * u_extended[iii * (xSize / 2 + 2) + jjj];
+
+				v_new[i * xSize / 2 + j] =
+					(1 - a) * (1 - b) * v_extended[ii * (xSize / 2 + 2) + jj] +
+					(1 - a) * b * v_extended[ii * (xSize / 2 + 2) + jjj] +
+					a * (1 - b) * v_extended[iii * (xSize / 2 + 2) + jj] +
+					a * b * v_extended[iii * (xSize / 2 + 2) + jjj];
+			}
+		}
+	}
+
+	YUV420toRGB(y_new, u_new, v_new, xSize, ySize, output);
+
+	/*
+		Deleting allocated resources
+	*/
+	delete[] y_old;
+	delete[] y_new;
+	delete[] u_old;
+	delete[] u_new;
+	delete[] v_old;
+	delete[] v_new;
+	delete[] y_extended;
+	delete[] u_extended;
+	delete[] v_extended;
 }
